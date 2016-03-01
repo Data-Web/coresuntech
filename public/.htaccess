@@ -1,0 +1,32 @@
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews
+    </IfModule>
+
+    RewriteEngine On
+
+    # Redirect Trailing Slashes If Not A Folder...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)/$ /$1 [L,R=301]
+
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+    RewriteRule .* - [E=HTTPS_AUTHORIZATION:%{HTTPS:Authorization}]
+
+    RewriteCond %{HTTP:device_id} .
+    RewriteRule .* - [E=HTTP_DEVICE_ID:%{HTTP:device_id}]
+    RewriteRule .* - [E=HTTPS_DEVICE_ID:%{HTTPS:device_id}]
+
+    RewriteCond %{HTTP:authorization_token} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION_TOKEN:%{HTTP:authorization_token}]
+    RewriteRule .* - [E=HTTPS_AUTHORIZATION_TOKEN:%{HTTPS:authorization_token}]
+    
+    RewriteCond %{HTTP:access_token} .
+    RewriteRule .* - [E=HTTP_ACCESS_TOKEN:%{HTTP:access_token}]
+    RewriteRule .* - [E=HTTPS_ACCESS_TOKEN:%{HTTPS:access_token}]
+
+    # Handle Front Controller...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>
